@@ -1,0 +1,9 @@
+{
+	"name": "timesheet-df-test",
+	"location": "canadacentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "161af2c1-38d0-42ec-8fa1-110ccb441baa",
+		"tenantId": "0bdfe6f0-083d-4174-9450-649f41e451fb"
+	}
+}
