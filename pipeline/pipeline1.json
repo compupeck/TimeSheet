@@ -3,8 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
-				"type": "Copy",
+				"name": "extractdw",
+				"type": "Custom",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -15,36 +15,20 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "BinarySource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
-						},
-						"formatSettings": {
-							"type": "BinaryReadSettings"
-						}
+					"resourceLinkedService": {
+						"referenceName": "storagelinkedservice",
+						"type": "LinkedServiceReference"
 					},
-					"sink": {
-						"type": "BinarySink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						}
-					},
-					"enableStaging": false
+					"folderPath": "dftest1",
+					"referenceObjects": {
+						"linkedServices": [],
+						"datasets": []
+					}
 				},
-				"inputs": [
-					{
-						"referenceName": "Binary1",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "Binary2",
-						"type": "DatasetReference"
-					}
-				]
+				"linkedServiceName": {
+					"referenceName": "batchlinkedservice",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"annotations": []
