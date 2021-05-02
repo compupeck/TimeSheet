@@ -22,7 +22,12 @@
 					},
 					"folderPath": "rpmdw",
 					"referenceObjects": {
-						"linkedServices": [],
+						"linkedServices": [
+							{
+								"referenceName": "storagelinkedservice",
+								"type": "LinkedServiceReference"
+							}
+						],
 						"datasets": []
 					}
 				},
