@@ -15,11 +15,12 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"command": "extractdw sacancdf pBUdxTCbEbsV3tRIAdsZ6HOOMAaEbyXwX0Qdg3TU/b0+0Jhze8KfLEG5se6aZqXpJGnJnniUxuOXoA9NoSJXsg== rpmdw input output",
 					"resourceLinkedService": {
 						"referenceName": "storagelinkedservice",
 						"type": "LinkedServiceReference"
 					},
-					"folderPath": "dftest1",
+					"folderPath": "rpmdw",
 					"referenceObjects": {
 						"linkedServices": [],
 						"datasets": []
