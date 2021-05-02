@@ -1,0 +1,77 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "df-dw-test"
+		},
+		"batchlinkedservice_accessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessKey' of 'batchlinkedservice'"
+		},
+		"storagelinkedservice_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'storagelinkedservice'"
+		},
+		"batchlinkedservice_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "rpm"
+		},
+		"batchlinkedservice_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://rpm.canadacentral.batch.azure.com"
+		},
+		"batchlinkedservice_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "dfpool"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "df-dw-test_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"storagelinkedservice_connectionString": {
+						"value": "[parameters('storagelinkedservice_connectionString')]"
+					},
+					"batchlinkedservice_accessKey": {
+						"value": "[parameters('batchlinkedservice_accessKey')]"
+					},
+					"batchlinkedservice_properties_typeProperties_accountName": {
+						"value": "[parameters('batchlinkedservice_properties_typeProperties_accountName')]"
+					},
+					"batchlinkedservice_properties_typeProperties_batchUri": {
+						"value": "[parameters('batchlinkedservice_properties_typeProperties_batchUri')]"
+					},
+					"batchlinkedservice_properties_typeProperties_poolName": {
+						"value": "[parameters('batchlinkedservice_properties_typeProperties_poolName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

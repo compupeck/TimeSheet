@@ -1,0 +1,117 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "df-dw-test"
+		},
+		"storagelinkedservice_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'storagelinkedservice'"
+		},
+		"batchlinkedservice_accessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessKey' of 'batchlinkedservice'"
+		},
+		"batchlinkedservice_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "rpm"
+		},
+		"batchlinkedservice_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://rpm.canadacentral.batch.azure.com"
+		},
+		"batchlinkedservice_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "dfpool"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/storagelinkedservice')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('storagelinkedservice_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/batchlinkedservice')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBatch",
+				"typeProperties": {
+					"accountName": "[parameters('batchlinkedservice_properties_typeProperties_accountName')]",
+					"accessKey": {
+						"type": "SecureString",
+						"value": "[parameters('batchlinkedservice_accessKey')]"
+					},
+					"batchUri": "[parameters('batchlinkedservice_properties_typeProperties_batchUri')]",
+					"poolName": "[parameters('batchlinkedservice_properties_typeProperties_poolName')]",
+					"linkedServiceName": {
+						"referenceName": "storagelinkedservice",
+						"type": "LinkedServiceReference"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/storagelinkedservice')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "extractdw",
+						"type": "Custom",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"command": "extractdw.exe sacancdf pBUdxTCbEbsV3tRIAdsZ6HOOMAaEbyXwX0Qdg3TU/b0+0Jhze8KfLEG5se6aZqXpJGnJnniUxuOXoA9NoSJXsg== rpmdw input output",
+							"resourceLinkedService": {
+								"referenceName": "storagelinkedservice",
+								"type": "LinkedServiceReference"
+							},
+							"folderPath": "rpmdw",
+							"referenceObjects": {
+								"linkedServices": [],
+								"datasets": []
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "batchlinkedservice",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/storagelinkedservice')]",
+				"[concat(variables('factoryId'), '/linkedServices/batchlinkedservice')]"
+			]
+		}
+	]
+}

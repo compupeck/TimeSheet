@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "df-dw-test"
+		},
+		"batchlinkedservice_accessKey": {
+			"value": ""
+		},
+		"storagelinkedservice_connectionString": {
+			"value": ""
+		},
+		"batchlinkedservice_properties_typeProperties_accountName": {
+			"value": "rpm"
+		},
+		"batchlinkedservice_properties_typeProperties_batchUri": {
+			"value": "https://rpm.canadacentral.batch.azure.com"
+		},
+		"batchlinkedservice_properties_typeProperties_poolName": {
+			"value": "dfpool"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
